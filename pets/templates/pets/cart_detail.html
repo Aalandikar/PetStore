@@ -1,0 +1,167 @@
+{% extends 'pets/base.html' %}
+{% block title %} MyCart {% endblock %}
+{% block content %}
+
+<style>
+    .cart-container {
+        width: auto;
+        margin: auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #007BFF;
+        color: white;
+    }
+    td {
+        background-color: #ffffff;
+    }
+    .input-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .button-minus, .button-plus {
+        background-color: #007BFF;
+        border: none;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin: 0 5px;
+        transition: background-color 0.3s ease;
+    }
+    .button-minus:hover, .button-plus:hover {
+        background-color: #0056b3;
+    }
+    .quantity-field {
+        width: 60px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 0 5px;
+        padding: 5px;
+    }
+    .total {
+        font-size: 1.5em;
+        text-align: right;
+        margin-top: 20px;
+        color: #333;
+    }
+    .checkout-btn {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+        padding: 15px;
+        background-color: #28a745;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .checkout-btn:hover {
+        background-color: #218838;
+    }
+    .checkout-btn1 {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+        padding: 15px;
+        background-color: #0080b3;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .checkout-btn1:hover {
+        background-color:#0b073f ;
+    }
+    .cart-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .cart-item img {
+        width: 100px;
+        border-radius: 10px;
+        margin-right: 20px;
+    }
+    .cart-item-details {
+        flex-grow: 1;
+    }
+    .cart-item-actions {
+        display: flex;
+        align-items: center;
+    }
+    .cart-item-actions a {
+        margin: 0 10px;
+        font-size: 1.2em;
+    }
+</style>
+
+<div class="cart-container">
+    {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+      </div>
+     {% endif %}
+    <h2>Cart Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.get_item_name }}</td>
+                <td>
+                    <div class="input-group">
+                        <a href="{% url 'increase_quantity' item.id %}" class="button-plus">+</a>
+                        <input type="text" value="{{ item.quantity }}" class="quantity-field" readonly>
+                        <a href="{% url 'decrease_quantity' item.id %}" class="button-minus">-</a>
+                    </div>
+                </td>
+                <td>{{ item.get_item_price }}</td>
+                <td>{{ item.total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="total">Total: {{ total }}</div>
+    <table class="table1">
+    <tr>
+    <td><a class="checkout-btn" href="{% url 'order_create' %}">Proceed To Checkout</a></td>
+    <td><a class="checkout-btn1" href="{% url 'product_list' %}">Continue Shopping</a></td>
+   
+    </tr>
+</table>
+</div>
+{% endblock %}

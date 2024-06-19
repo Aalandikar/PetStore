@@ -1,0 +1,21 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: lightcoral;
+}
+
+header{
+    background-color: lightpink;
+    color: black;
+    padding: 10px 0;
+    text-align: center;
+}
+
+footer{
+    background-color: lightpink;
+    color: black;
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+}

@@ -1,0 +1,81 @@
+{% extends "pets/base.html" %}
+{% block title %}Checkout Form{% endblock %}
+
+{% block content %}
+<style>
+    /* Form Styling */
+.form1 {
+    background-color: #f9f9f9;
+    padding: 50px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-left: 250px;
+    
+}
+
+/* Input fields */
+.form1 input, .form1 button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    max-width: 500px;
+}
+
+/* Full width for buttons */
+form button {
+    grid-column: span 2;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #4cae4c;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+form {
+    animation: fadeIn 1s ease-in-out;
+}
+</style>
+    <h2>Checkout</h2>
+
+    <form method="post" class="form1">
+        {% csrf_token %}
+        <div>
+            {{ form.first_name.label_tag }} {{ form.first_name }}
+        </div>
+        <div>
+            {{ form.last_name.label_tag }} {{ form.last_name }}
+        </div>
+        <div>
+            {{ form.email.label_tag }} {{ form.email }}
+        </div>
+        <div>
+            {{ form.address.label_tag }} {{ form.address }}
+        </div>
+        <div>
+            {{ form.pincode.label_tag }} {{ form.pincode }}
+        </div>
+        <div>
+            {{ form.city.label_tag }} {{ form.city }}
+        </div>
+
+        <button type="submit">Place Order</button>
+    </form>
+{% endblock %}

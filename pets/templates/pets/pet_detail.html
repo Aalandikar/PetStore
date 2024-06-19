@@ -1,0 +1,57 @@
+{% extends 'pets/base.html' %}
+{% block title %} Pet Detail {% endblock %}
+{% block content %}
+
+    <style>
+        .img-container {
+            max-height: 400px;
+            overflow: hidden;
+        }
+        .img-container img {
+            width: 100%;
+            height: auto;
+        }
+        .pet-details h1 {
+            font-size: 2.5em;
+        }
+        .pet-details h2, .pet-details p {
+            font-size: 1.2em;
+        }
+        .btn-primary {
+            background-color: #007BFF;
+            border: none;
+            width: 100%;
+            padding: 15px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .container-fluid {
+            padding: 20px;
+        }
+    </style>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Pet Image -->
+            <div class="col-md-6 mb-4 img-container">
+                <img src="{{ pet.image.url }}" class="img-fluid img-thumbnail" alt="{{ pet.name }}">
+            </div>
+            <!-- Pet Details -->
+            <div class="col-md-6 d-flex flex-column justify-content-center">
+                <div class="pet-details">
+                    <h1 class="text-center">{{ pet.name }}</h1>
+                    <h2 class="mt-3">Breed: {{ pet.breed }}</h2>
+                    <p class="mt-2">Description: {{ pet.description }}</p>
+                    <p class="mt-2">Age: {{ pet.age }}</p>
+                    <p class="mt-2">Price: {{ pet.price }}</p>
+                    <p class="mt-2">Quantity: {{ pet.quantity }}</p>
+                </div>
+                <div class="mt-4">
+                    <a href="{% url 'add_to_cart' 'pet' pet.id %}" class="btn btn-primary btn-lg">Add To Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

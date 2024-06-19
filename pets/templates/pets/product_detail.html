@@ -1,0 +1,61 @@
+{% extends 'pets/base.html' %}
+{% block title %} Product Detail {% endblock %}
+{% block content %}
+
+    <style>
+    .img-container {
+    max-height: 600px; /* Ensure this value has a unit */
+    overflow: hidden;
+    display: flex;
+    justify-content: center; /* Center the image horizontally */
+    align-items: center; /* Center the image vertically */
+    }
+
+    .img-container img {
+    max-width: 100%; /* Scale the image width to fit the container */
+    max-height: 600px; /* Scale the image height to fit the container */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    }
+
+        .pet-details h1 {
+            font-size: 2.5em;
+        }
+        .pet-details h2, .pet-details p {
+            font-size: 1.2em;
+        }
+        .btn-primary {
+            background-color: #007BFF;
+            border: none;
+            width: 100%;
+            padding: 15px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .container-fluid {
+            padding: 20px;
+        }
+    </style>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Pet Image -->
+            <div class="col-md-6 mb-4 img-container">
+                <img src="{{ product.image.url }}" class="img-fluid img-thumbnail" alt="{{ product.name }}">
+            </div>
+            <!-- Pet Details -->
+            <div class="col-md-6 d-flex flex-column justify-content-center">
+                <div class="product-details">
+                    <h1 class="text-center">{{ product.name }}</h1>
+                    <p class="mt-2">Description: {{ product.description }}</p>
+                    <p class="mt-2">Price: {{ product.price }}</p>
+                    <p class="mt-2">Quantity: {{ product.quantity }}</p>
+                </div>
+                <div class="mt-4">
+                    <a href="{% url 'add_to_cart' 'product' product.id %}" class="btn btn-primary btn-lg">Add To Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
