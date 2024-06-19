@@ -153,16 +153,13 @@ def order_create(request):
                 elif item.pet:
                     item.pet.quantity -= item.quantity
                     item.pet.save()
-            # cart.items.all().delete()
-            print("Total=> " ,order.total_cost)
-            amount=float(order.total_cost *100)
-            client = razorpay.Client(auth=(settings.RAZORPAY_TEST_KEY_ID, settings.RAZORPAY_TEST_KEY_SECRET))
-            payment_data = {
+                    amount=float(order.total_cost *100)
+                client = razorpay.Client(auth=(settings.RAZORPAY_TEST_KEY_ID, settings.RAZORPAY_TEST_KEY_SECRET))
+                payment_data = {
                 'amount': amount,
                 'currency': 'INR',
                 'receipt': f'order_{order.id}', 
-            }
-            print("Total (INR)=> ",amount)
+                 }
             print(payment_data)
             payment = client.order.create(data=payment_data)
 
@@ -175,7 +172,8 @@ def order_create(request):
             # send_mail(subject, message, from_email, to_email)
 
             #send_order_confirmation_email(order, request.user.email)
-            print(request.user.email)
+            #print(request.user.email)
+
             cart.items.all().delete()
             return render(request, 'pets/order_created.html', {'order': order, 'payment': payment, 'razorpay_key_id': settings.RAZORPAY_TEST_KEY_ID})
     else : 
