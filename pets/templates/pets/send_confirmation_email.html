@@ -1,0 +1,23 @@
+{% extends 'pets/base.html' %}
+
+{% block title %}Payment Confirmation{% endblock %}
+
+{% block content %}
+    <h2>Payment Confirmation</h2>
+    <p>Thank you for your payment.</p>
+    <table class="table table-striped">
+        <tr>
+            <th>Order ID</th>
+            <td>{{ orders.id }}</td>
+        </tr>
+    </table>
+    <div class="container">
+        <h1>Payment Completed</h1>
+        <p>Your payment has been successfully processed.</p>
+        <p>Thank you for your order!</p>
+        <a href="#" class="btn">Back to Home</a>
+    </div>
+     
+    <a href="{% url 'send_confirmation_email' order.id %}" class="btn btn-primary">ok</a> 
+
+{% endblock %}

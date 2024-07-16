@@ -1,0 +1,24 @@
+
+{% extends "pets/base.html" %}
+{% block title %}Order Confirmation {% endblock %}
+
+{% block content %}
+<h2>Order Confirmation - {{order.id}}</h2>
+<p>Dear, {{order.firstname}} {{order.lastname}}, </p>
+<p>Thank you for your order. Here are the details of your order: </p>
+<ul>
+    
+    {% for item in order.items.all %}
+    <li>{{ item.quantity }} x 
+        {% if item.product %}
+            {{ item.product.name }}
+        {% else %}
+            {{ item.pet.name }}
+        {% endif %}
+        - Rupees {{ item.price }}</li>
+    {% endfor %}
+</ul>
+<p>Total : Rupees{{ order.total_cost}}</p>
+<p>We hope you enjoy your purchase!</p>
+<p>Best regards, <br>My PetStore</p>
+{% endblock %}

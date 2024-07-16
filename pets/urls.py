@@ -16,6 +16,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
+    path('order_create/', views.order_create, name='order_create'),
     #path('email/', views.send_order_confirmation_email, name='send_order_confirmation_email'),
 ]
 

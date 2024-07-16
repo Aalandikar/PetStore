@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from PetStore import settings
 from pets.models import Cart, CartItem, Order, OrderItems, Pet, Product
+from pets.utils import send_order_confirmation_email
 from .forms import OrderCreateForm, SearchForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -10,6 +11,8 @@ import razorpay
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 # Create your views here.
 def pet_list(request):
@@ -74,7 +77,6 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
-
 @login_required
 def add_to_cart(request, item_type, item_id):
     user_cart, created = Cart.objects.get_or_create(user_id=request.user.id)
@@ -113,13 +115,13 @@ def decrease_quantity(request, item_id):
         cart_item.delete()
     return redirect('cart_detail')
 
-# @login_required
-# def send_order_confirmation_email(order, to_email):
-#     subject = 'Your Order Confirmation'
-#     message = f'Thank you for your order! Your order ID is {order.id}.'
-#     from_email = settings.EMAIL_HOST_USER
-#     recipient_list = [to_email]
-#     send_mail(subject, message, from_email, recipient_list)
+# # @login_required
+# # def send_order_confirmation_email(order, to_email):
+# #     subject = 'Your Order Confirmation'
+# #     message = f'Thank you for your order! Your order ID is {order.id}.'
+# #     from_email = settings.EMAIL_HOST_USER
+# #     recipient_list = [to_email]
+# #     send_mail(subject, message, from_email, recipient_list)
 
 @login_required
 def order_create(request):
@@ -153,28 +155,19 @@ def order_create(request):
                 elif item.pet:
                     item.pet.quantity -= item.quantity
                     item.pet.save()
-                    amount=float(order.total_cost *100)
+                    #amount=float(order.total_cost *100)
+                    
+                cart.items.all().delete()
+             
                 client = razorpay.Client(auth=(settings.RAZORPAY_TEST_KEY_ID, settings.RAZORPAY_TEST_KEY_SECRET))
                 payment_data = {
-                'amount': amount,
+                'amount': float(order.total_cost *100),
                 'currency': 'INR',
                 'receipt': f'order_{order.id}', 
                  }
-            print(payment_data)
+            #print(payment_data)
             payment = client.order.create(data=payment_data)
-
-            # Send email confirmation to user
-            # subject = f'Order Confirmation - Order #{order.id}'
-            # message = f'Thank you for your order! Your order #{order.id} has been successfully placed.'
-            # from_email = settings.EMAIL_HOST_USER
-            # to_email = [request.user.email]  # Replace with actual user email
-            
-            # send_mail(subject, message, from_email, to_email)
-
-            #send_order_confirmation_email(order, request.user.email)
-            #print(request.user.email)
-
-            cart.items.all().delete()
+    
             return render(request, 'pets/order_created.html', {'order': order, 'payment': payment, 'razorpay_key_id': settings.RAZORPAY_TEST_KEY_ID})
     else : 
         form = OrderCreateForm()
@@ -191,5 +184,7 @@ def remove_from_cart(request, item_id):
 def process_payment(request):
     if request.method == 'POST':
         return HttpResponse("Payment Successful")
-    return HttpResponse(status=400)
+    return render(request, 'send_confirmation_email.html')
+
+
 

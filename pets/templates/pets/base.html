@@ -50,9 +50,18 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'pet_list' %}">Pets</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}">Products</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'cart_detail' %}"><i class="fas fa-shopping-cart"></i> My Cart</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                          <a class="nav-link text-white" href="/logout">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                          <a class="nav-link text-white" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link text-white" href="/register">Register</a>
+                        </li>
+                        {% endif %}
                     </ul>
                     <form class="form-inline ml-auto my-2 my-lg-0" method="get">
                         <input class="form-control mr-sm-2" type="search" name="query" placeholder="Search">

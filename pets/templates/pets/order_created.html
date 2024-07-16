@@ -2,28 +2,41 @@
 {% block title %}Order Created {% endblock %}
 
 {% block content %}
+<style>
+    /* Your CSS styles */
+    h2 {
+        color: #333;
+        font-size: 24px;
+    }
+
+    p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    /* Add more styles as needed */
+</style>
+
 <h2>Thank you for purchasing</h2>
 <p>Your order has been successfully placed. Your order id : {{ order.id }}</p>
-<p><button id="rzp-button">Pay With RazorPay<button></p>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script>
-        document.getElementById('rzp-button').onclick = function(e){
-        
-        var options = {
-                key:"{{ razorpay_key_id }}",
-                amount:"{{ payment.amount }}",
-                currency:"INR",
-                order_id:"{{ payment.id }}",
-                name:"Ankita Alandikar",
-                description:"{{ order.id }}",
-                prefill:{ name:"{{ order.first_name }}"},
-        
-        };
-        //#var rzp = new RazorPay(options);  // incorrect way of initializing the Razorpay in javascript
-        var rzp = new Razorpay(options);
-        rzp.open();
+<p><button id="rzp-button" class="btn btn-primary">Pay With RazorPay</button>  <a href="{% url 'product_list' %}" class="btn btn-primary">Continue Shopping</a></p>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('rzp-button').onclick = function(e){
+    
+    var options = {
+            key:"{{ razorpay_key_id }}",
+            amount:"{{ payment.amount }}",
+            currency:"INR",
+            order_id:"{{ payment.id }}",
+            name:"PET SHOP",
+            description:"{{ order.id }}",
+            prefill:{ name:"{{ order.first_name }}"},
+    
+    };
+    var rzp = new Razorpay(options);
+    rzp.open();
+    }
+</script>
 
-        }
-    </script>
-<a href="{% url 'product_list' %}">Continue Shopping</a>
 {% endblock %}
